@@ -29,7 +29,6 @@ def train(rank, args, shared_model):
             torch.load(args.load, map_location=lambda storage, loc: storage))
 
     model.train()
-
     optimizer = optim.SGD(shared_model.parameters(), lr=args.lr)
 
     p_losses = []
@@ -55,7 +54,6 @@ def train(rank, args, shared_model):
             episode_length = 0
             cx = torch.zeros(1, 256)
             hx = torch.zeros(1, 256)
-
         else:
             cx = cx.data
             hx = hx.data

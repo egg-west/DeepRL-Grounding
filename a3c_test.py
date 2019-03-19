@@ -10,10 +10,11 @@ from models import A3C_LSTM_GA
 from torch.autograd import Variable
 from constants import *
 
-from tensorboardX import SummaryWritter
-writer = SummaryWritter()
+from tensorboardX import SummaryWriter
+
 
 def test(rank, args, shared_model):
+    writer = SummaryWriter()
     torch.manual_seed(args.seed + rank)
 
     env = grounding_env.GroundingEnv(args)
@@ -55,6 +56,7 @@ def test(rank, args, shared_model):
     num_episode = 0
     best_reward = 0.0
     test_freq = 50
+    print('start testing')
     while True:
         episode_length += 1
         if done:
@@ -82,11 +84,13 @@ def test(rank, args, shared_model):
         (image, _), reward, done,  _ = env.step(action[0])
 
         done = done or episode_length >= args.max_episode_length
-        reward_sum += reward_sum
+        reward_sum += reward
 
         if done:
-            writer.add_scalar('test/episode_reward', reward_sum, episode_length)
+            print('start recording, reward_sum: ', reward_sum)
+            
             num_episode += 1
+            writer.add_scalar('test/episode_reward', reward_sum, num_episode)
             rewards_list.append(reward_sum)
             # Print reward while evaluating and visualizing
             if args.evaluate != 0 and args.visualize == 1:
