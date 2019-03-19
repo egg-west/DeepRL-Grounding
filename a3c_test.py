@@ -10,6 +10,8 @@ from models import A3C_LSTM_GA
 from torch.autograd import Variable
 from constants import *
 
+from tensorboardX import SummaryWritter
+writer = SummaryWritter()
 
 def test(rank, args, shared_model):
     torch.manual_seed(args.seed + rank)
@@ -80,9 +82,10 @@ def test(rank, args, shared_model):
         (image, _), reward, done,  _ = env.step(action[0])
 
         done = done or episode_length >= args.max_episode_length
-        reward_sum += reward
+        reward_sum += reward_sum
 
         if done:
+            writer.add_scalar('test/episode_reward', reward_sum, episode_length)
             num_episode += 1
             rewards_list.append(reward_sum)
             # Print reward while evaluating and visualizing
