@@ -102,6 +102,7 @@ def test(rank, args, shared_model):
             else:
                 accuracy = 0
             accuracy_list.append(accuracy)
+
             if(len(rewards_list) >= test_freq):
                 print(" ".join([
                     "Time {},".format(time.strftime("%Hh %Mm %Ss",
@@ -110,6 +111,8 @@ def test(rank, args, shared_model):
                     "Avg Accuracy {},".format(np.mean(accuracy_list)),
                     "Avg Ep length {},".format(np.mean(episode_length_list)),
                     "Best Reward {}".format(best_reward)]))
+                writer.add_scalar('test/avg_reward', np.mean(rewards_list), num_episode)
+                writer.add_scalar('test/avg_acc', np.mean(accuracy_list), num_episode)
                 logging.info(" ".join([
                     "Time {},".format(time.strftime("%Hh %Mm %Ss",
                                       time.gmtime(time.time() - start_time))),

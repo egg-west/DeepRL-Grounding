@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description='Gated-Attention for Grounding')
 # Environment arguments
 parser.add_argument('-l', '--max-episode-length', type=int, default=30,
                     help='maximum length of an episode (default: 30)')
-parser.add_argument('-d', '--difficulty', type=str, default="hard",
+parser.add_argument('-d', '--difficulty', type=str, default="easy",
                     help="""Difficulty of the environment,
                     "easy", "medium" or "hard" (default: hard)""")
 parser.add_argument('--living-reward', type=float, default=0,
